@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/less">
+    * {
+      background-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 1px 0 red;
+    }
+    html {
+      zoom: 1.5;
+    }
+    body {
+      margin: 200px;
+      width: 100px;
+    }
+    /* @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes rotate-reverse {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+    body {
+      animation: rotate-reverse linear 10s both 99999;
+      span {
+        animation: rotate linear 10s both 99999;
+        display: inline-block;
+      }
+    } */
+
+    /* @keyframes rotate {
+      from {
+        transform: rotate(0deg) translate(50px) rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg) translate(50px) rotate(-360deg);
+      }
+    }
+    body {
+      span {
+        display: inline-block;
+        animation: rotate 2s both linear infinite;
+      }
+    } */
+
+    @keyframes rotate {
+  from {
+    transform: rotate(0deg) translate(50px) rotate(0);
+  }
+  to {
+    transform: rotate(360deg) translate(50px) rotate(-360deg);
+  }
+}
+  @keyframes h {
+    from {
+      margin-left: 0;
+    }
+    to {
+      margin-left: 200px;
+    }
+  }
+  @keyframes v {
+    from {
+      margin-top: 0;
+    }
+    to {
+      margin-top: 200px;
+    }
+  }
+  span {
+    display: inline-block;
+    animation: h 1s cubic-bezier(.36,0,.64,1) alternate infinite, v 1s -0.5s cubic-bezier(.36,0,.64,1) alternate infinite;
+  }
+  </style>
+</head>
+<body>
+  <span>🥰</span>
+</body>
+<script src="../less.min.js"></script>
+</html>

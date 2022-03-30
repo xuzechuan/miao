@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    box-shadow: 0 0 2px 0 red;
+    background-color: rgba(0, 0, 0, 0.1)
+  }
+  @keyframes spin {
+    0% {
+      transform: rotateX(0deg);
+    }
+    100% {
+      transform: rotateX(360deg);
+    }
+  }
+  section {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: spin 10s both linear;
+  }
+  section:hover {
+    transform: rotateX(360deg);
+  }
+  div {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+    font-size: 40px;
+    line-height: 100px;
+  }
+  div:nth-child(1) {
+    transform: rotate(0)  translateZ(50px);
+    background-image: linear-gradient(to left, white, black);
+  }
+  div:nth-child(2) {
+    transform: rotateX(90deg) translateZ(50px);
+  }
+  div:nth-child(3) {
+    transform: rotateX(-90deg) translateZ(50px);
+  }
+  div:nth-child(4) {
+    transform: rotateY(90deg) translateZ(50px);
+  }
+  div:nth-child(5) {
+    transform: rotateY(-90deg) translateZ(50px);
+  }
+  div:nth-child(6) {
+    transform: rotatex(180deg) translateZ(50px);
+  }
+</style>
+<body>
+  <section>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+  </section>
+</body>
+</html>

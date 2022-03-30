@@ -1,0 +1,394 @@
+<script>
+
+// 生成n个由n以内的整数组成的随机数组
+function randomAry(n) {
+  var ary = []
+  for (var i = 0; i < n; i++) {
+    var rand = Math.random()
+    ary.push(  Math.floor(rand * n)  )
+  }
+  return ary
+}
+
+// 判断一个数组是否是升序的
+function isSorted(ary) {
+  for (var i = 1; i < ary.length; i++) {
+    if (ary[i] < ary[i - 1]) {
+      return false
+    }
+  }
+  return true
+}
+
+// 交换数组第i和第j项的值
+function swap(ary, i, j) {
+  var t = ary[i]
+  ary[i] = ary[j]
+  ary[j] = t
+}
+
+
+
+
+function selectSort(ary) {
+  //数组最后一项不用遍历
+  for (var i = 0; i < ary.length - 1; i++) {
+    // 找出剩下元素中最小的放入i位置
+    var minIdx = i // 假设查找范围的第一项即为最小的
+    for (var j = i + 1; j < ary.length; j++) {
+      if (ary[j] < ary[minIdx]) {
+        minIdx = j
+      }
+    }
+    // 将最小的元素放到i位置上，并把i位置原来的值放入最小元素的位置
+    swap(ary, i, minIdx)
+  }
+  return ary
+}
+
+
+//把小的值插入到前面已经排好递增顺序的数组
+function insertSort(ary) {
+  for (let i = 1; i < ary.length; i++) {
+    for (var j = i - 1; j >= 0; j--) {
+      if (ary[j + 1] < ary[j]) {
+        swap(ary, j + 1, j)
+      } else {
+        break
+      }
+    }
+  }
+  return ary
+}
+
+// 冒泡排序
+//把最大的值放在最后一位，把第二大的值放在倒数第二位.......
+function bubbleSort(ary) {
+  // 遍历交换的结束位置
+  for (var i = ary.length - 1; i >= 0; i--) {
+    var swapped = false
+    for (var j = 0; j < i; j++) { // 从0到第i个元素分别跟其右边的元素对比交换
+      if (ary[j] > ary[j + 1]) {
+        swapped = true
+        swap(ary, j, j + 1)
+      }
+    }
+    if (!swapped) { // 如果某次遍历没有交换过，说明数组已经有序，结束
+      break
+    }
+  }
+  return ary
+}
+
+
+
+
+
+
+
+/**
+ * 时间复杂度：n*log(n)
+ * 空间复杂度：n + log(n)
+ */
+function mergeSort(ary) {
+  if (ary.length < 2) {
+    return ary
+  }
+  // 把数组一分为二
+  var mid = Math.floor(ary.length / 2)
+  var left = ary.slice(0, mid)
+  var right = ary.slice(mid)
+  // 左边排
+  mergeSort(left)
+  // 右边排
+  mergeSort(right)
+
+
+  // 合起来
+  var i = 0 // 指向left数组
+  var j = 0 // 指向right数组
+  var k = 0 // 指向结果数组
+
+  if (left.at(-1) > right.at(0)) {
+    //同步指针，任意一个数组先遍历完结束
+    while (i < left.length && j < right.length) {
+      if (left[i] < right[j]) {
+        ary[k++] = left[i++]
+      } else {
+        ary[k++] = right[j++]
+      }
+    }
+  }
+
+  //哪一个数组还没遍历完加到结果数组的末尾
+  while (i < left.length) {
+    ary[k++] = left[i++]
+  }
+  while (j < right.length) {
+    ary[k++] = right[j++]
+  }
+
+  return ary
+}
+
+
+
+// 对数组ary从start到end范围内的元素进行就地归并排序
+// 就地：不创建新的数组，所有元素均在原数组中操作
+// 无法实现
+function mergeSortInPlace(ary, start = 0, end = ary.length) {
+  if (ary.length < 2) {
+    return ary
+  }
+  // 把数组一分为二
+  var mid = Math.floor((start + end) / 2)
+  // 左边排
+  mergeSort(ary, start, mid)
+  // 右边排
+  mergeSort(ary, mid, end)
+
+  // 合起来
+  var i = 0 // 指向left数组
+  var j = 0 // 指向right数组
+  var k = 0 // 指向结果数组
+
+  while (i < left.length && j < right.length) {
+    if (left[i] < right[j]) {
+      ary[k++] = left[i++]
+    } else {
+      ary[k++] = right[j++]
+    }
+  }
+
+  while (i < left.length) {
+    ary[k++] = left[i++]
+  }
+  while (j < right.length) {
+    ary[k++] = right[j++]
+  }
+
+  return ary
+}
+
+function quickSort(ary) {
+  if (ary.length < 2) {
+    return ary.slice()
+  }
+  var randomIdx = Math.floor(Math.random() * ary.length)
+  var pivot = ary[randomIdx]
+  var left = []
+  var mid = []
+  var right = []
+
+  for (var i = 0; i < ary.length; i++) {
+    if (ary[i] < pivot) {
+      left.push(ary[i])
+    } else if (ary[i] > pivot) {
+      right.push(ary[i])
+    } else {
+      mid.push(ary[i])
+    }
+  }
+
+  quickSort(left)
+  quickSort(right)
+
+  var i = 0
+  for (var j = 0; i < left.length; j++) {
+    ary[i++] = left[j++]
+  }
+  for (var j = 0; i < mid.length; j++) {
+    ary[i++] = mid[j++]
+  }
+  for (var j = 0; i < right.length; j++) {
+    ary[i++] = right[j++]
+  }
+
+  return ary
+}
+
+
+// 对数组ary的从start到end（包含）的元素进行快排
+function qSort(ary, start = 0, end = ary.length - 1) {
+  //???????????????????????????????????????????????????start >= end
+  if (start >= end) {
+    return ary
+  }
+
+  var pivotIdx = start // Math.floor(Math.random() * (end - start + 1) + start)
+  var pivot = ary[pivotIdx]
+
+  swap(ary, pivotIdx, end)
+
+  var i = start
+
+  // 不遍历放在最后的哨兵元素
+  for (var j = start; j < end; j++) {
+    if (ary[j] < pivot) {
+      swap(ary, i, j)
+      i++
+    }
+  }
+
+  swap(ary, i, end) // 将哨兵元素换回中间
+
+  //此时，i位置是哨兵元素
+  //i+1到j之间是[大于等于]哨兵元素
+  //start到i-1是[小于]哨兵元素
+  //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+  qSort(ary, start, i - 1)
+  qSort(ary, i + 1, end)
+
+  return ary
+}
+
+function qSort3(ary, start = 0, end = ary.length - 1) {
+  if (start >= end) {
+    return ary
+  }
+
+  var pivotIdx = start // Math.floor(Math.random() * (end - start + 1) + start)
+  var pivot = ary[pivotIdx]
+
+  swap(ary, pivotIdx, end)
+
+  var i = start
+  var k = start
+  //j遍历整个start和end数组
+  // [1,6,1,2,5,4,2,2,5]
+  for (var j = start; j < end; j++) {
+    if (ary[j] < pivot) {
+      swap(ary, i, j)
+      //if成立，说明else if (ary[j] == pivot) {swap(ary, j, k++)}执行，i和k不再同一个位置，需要再i和j对调位置后再对调k和j
+      if (i !== k) {
+        swap(ary, k, j)
+      }
+      i++
+      k++
+    } else if (ary[j] == pivot) {
+      swap(ary, j, k++)
+    }
+  }
+
+  swap(ary, end, k)
+
+  qSort3(ary, start, i - 1)
+  qSort3(ary, k + 1, end)
+
+  return ary
+}
+function qSort3(ary, start = 0, end = ary.length - 1) {
+  if (start >= end) {
+    return ary
+  }
+
+  var pivotIdx = start // Math.floor(Math.random() * (end - start + 1) + start)
+  var pivot = ary[pivotIdx]
+
+  swap(ary, pivotIdx, end)
+
+  var i = start
+  var k = start
+  //j遍历整个start和end数组
+  // [1,6,1,2,5,4,2,2,5]
+  for (var j = start; j < end; j++) {
+    if (ary[j] < pivot) {
+      swap(ary, i, j)
+      //if成立，说明else if (ary[j] == pivot) {swap(ary, j, k++)}执行，i和k不再同一个位置，需要再i和j对调位置后再对调k和j
+      //i指向第一个相同的值，k指向最后一个相同值的右一位
+      if (i !== k) {
+        swap(ary, k, j)
+      }
+      i++
+      k++
+    } else if (ary[j] == pivot) {
+      swap(ary, j, k++)
+    }
+  }
+
+  swap(ary, end, k)
+
+  qSort3(ary, start, i - 1)
+  qSort3(ary, k + 1, end)
+
+  return ary
+}
+
+// 对数组ary的从start到end（包含）的元素进行快排
+// predicate函数针对数组中的元素返回一个确定其顺序的数值
+// 排序算法会根据这个数值来元素元素在数组中的有序位置
+function qSortBy(ary, predicate = it => it, start = 0, end = ary.length - 1) {
+  if (start >= end) {
+    return ary
+  }
+
+  var pivotIdx = Math.floor(Math.random() * (end - start + 1) + start)
+  var pivot = ary[pivotIdx]
+
+  swap(ary, pivotIdx, end)
+
+  var i = start
+
+  // 不遍历放在最后的哨兵元素
+  for (var j = start; j < end; j++) {
+    if (predicate(ary[j]) < predicate(pivot)) {
+      swap(ary, i, j)
+      i++
+    }
+  }
+
+  swap(ary, i, end) // 将哨兵元素换回中间
+
+  //此时，i位置是哨兵元素
+  //i+1到j之间是[大于等于]哨兵元素
+  //start到i-1是[小于]哨兵元素
+  //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+  qSortBy(ary, predicate, start, i - 1)
+  qSortBy(ary, predicate, i + 1, end)
+
+  return ary
+}
+
+qSortBy(ancestry, it => -it.born)
+
+// 对数组ary的从start到end（包含）的元素进行快排
+// compare函数接收数组中的两个元素，返回正，负，零以告诉排序算法谁大谁小或再者相同
+function qSortWith(ary, compare = (a, b) => a - b, start = 0, end = ary.length - 1) {
+  if (start >= end) {
+    return ary
+  }
+
+  var pivotIdx = Math.floor(Math.random() * (end - start + 1) + start)
+  var pivot = ary[pivotIdx]
+
+  swap(ary, pivotIdx, end)
+
+  var i = start
+
+  // 不遍历放在最后的哨兵元素
+  for (var j = start; j < end; j++) {
+    if (compare(ary[j], pivot) < 0) {
+      swap(ary, i, j)
+      i++
+    }
+  }
+
+  swap(ary, i, end) // 将哨兵元素换回中间
+
+  //此时，i位置是哨兵元素
+  //i+1到j之间是[大于等于]哨兵元素
+  //start到i-1是[小于]哨兵元素
+  //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+  qSortWith(ary, compare, start, i - 1)
+  qSortWith(ary, compare, i + 1, end)
+
+  return ary
+}
+
+qSortWith(ancestry, (a, b) => a.born - b.born)
+
+
+</script>
+
+
+

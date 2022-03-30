@@ -1,0 +1,167 @@
+<!-- 以下所有“是否”的题目都输出YES/NO
+narcissistic: 输入一个数，判断是否是水仙花数
+narcissistics: 输出10000以内的水仙花数
+palindrom: 输入一个数，判断它数是否是回文数，如1223221
+weekday: 输入年份与月份，输出这个月的第一天是周几（视具体设定，周一可以用1或0表示）
+complete-number: 输入一个数，判断它是否是完全数（自行查相关概念）
+complete-numbers: 输出1000以内的完全数
+prime: 输入一个数，判断它是否是素数
+primes: 输出100以内的素数
+itoa: 给定一个整数，将其转换为字符串：不能使用String等现成函数，但可以使用非此功能的其它函数，也不能利用任意运算符的自动类型转换
+lcf&lcm: 输入两个数，输出它们的最大公约数和最小公倍数
+sqrt: 输入一个数，求它的平方根，精确到小数点后3位，不能使用Math.sqrt -->
+
+<!-- narcissistic: 输入一个数，判断是否是水仙花数 -->
+<!-- “水仙花数是指一种三位数,其各个数之立方和等于该数。 水仙花数共有4个,分别为:153、370、371、407” -->
+<script id="水仙花数">
+
+  function digitalWidth(n) {
+    let width = 0
+    let digital
+    // if (n == 0) {
+    //   width = 1
+    // } else {
+    //   while (n > 0) {  // n > 0, 有个位数可以模
+    //     width++
+    //     digital = n % 10
+    //     n = (n - digital) / 10
+    //   }
+    // }
+    // return width
+
+    do {
+      width++
+      digital = n % 10
+      n = (n - digital) / 10
+    } while (n > 0)
+    return width
+  }
+
+  function isNarcissistic(n) {
+    let count = 0
+
+
+
+    if (digitalWidth(n) == 3) {   //三位数
+      let sum = 0
+      let a = n
+      for (var i = 1; i <= 3; i++) {
+        digital = n % 10
+        sum += Math.pow(digital, 3)
+        n = (n - digital) / 10
+      }
+      if (sum == a) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+    }
+
+// narcissistics: 输出10000以内的水仙花数
+    for (var i = 1; i <= 10000; i++) {
+      if (isNarcissistic(i)) {
+        console.log(i)
+      }
+    }
+
+// palindrom: 输入一个数，判断它数是否是回文数，如1223221
+    function isPalindrom(n) {
+      let sum = 0
+      let m = n
+
+      while (m > 0) {    // m > 0, 有个位数可以模
+        let d = m % 10
+        sum = sum * 10 + d
+        m = (m - d) / 10
+      }
+      if (sum == n) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+  function digitalWidth(n) {
+    let width = 0
+    let digital
+    // if (n == 0) {
+    //   width = 1
+    // } else {
+    //   while (n > 0) {  // n > 0, 有个位数可以模
+    //     width++
+    //     digital = n % 10
+    //     n = (n - digital) / 10
+    //   }
+    // }
+    // return width
+
+    do {
+      width++
+      digital = n % 10
+      n = (n - digital) / 10
+    } while (n > 0)
+    return width
+  }
+  function isPalindrom2(n) {
+    let width = digitalWidth(n)
+    for (let i = 1; i <= width / 2; i++) {
+      //取出右数第i位
+      let a = Math.trunc(n / Math.pow(10, i - 1)) % 10
+      //取出左数第i位
+      let j = width - i + 1         //等价于取出右数第j位
+      let b = Math.trunc(n / Math.pow(10, j - 1)) % 10
+      if (a != b) {
+        return false
+      }
+    }
+    return true
+  }
+
+  // complete-number: 输入一个数，判断它是否是完全数（自行查相关概念）
+/*   function isCompleteNumber(n) {
+    var sum = 1
+    for (let i = 2; i < n; i++) {  //求出所有因子的和
+      if (n % i == 0) {
+        sum += i
+      }
+    }
+    return sum == n
+  } */
+
+
+  function isCompleteNumber(n) {
+    var sum = 1
+    let stop = n / 2
+    for (let i = 2; i <= stop; i++) {  //求出所有因子的和             //因子等于小于数的一半
+      if (n % i == 0) {
+        sum += i
+      }
+    }
+    return sum == n
+  }
+
+  function isCompleteNumber(n) {
+    var sum = -n
+    let stop = Math.sqrt(n)
+    for (let i = 1; i < stop; i++) {  //求出所有因子的和
+      if (n % i == 0) {
+        let d = n / i  //与i对应的另一个因子
+        sum += i + d
+      }
+    }
+    if (stop == Math.trunc(stop)) {
+      sum += stop
+    }
+    return sum == n
+  }
+
+  // complete-numbers: 输出1000以内的完全数
+  for (let i = 0; i < 1000; i++) {
+    if (isCompleteNumber(i)) {
+      console.log(i)
+    }
+  }
+</script>

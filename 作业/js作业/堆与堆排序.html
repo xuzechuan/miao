@@ -1,0 +1,183 @@
+
+堆(Heap)：
+又叫优先队列(Priority Queue)
+
+堆是一颗完全二叉树，所以它一般使用数组来存储：
+  从上到下从左到右按顺序存储每个结点的值
+堆也是一种有序结构：
+  任何一个结点的值大于（或小于）等于其两个子结点
+  大于等于的时候，这个堆称为大顶堆
+  小于等于的时候，这个堆称为小顶堆
+  在大顶堆中，根结点的值是堆中最大的值
+  在小顶堆中，根结点的值是堆中最小的值
+堆一般用来维护只关心其最值的动态数据集合
+
+堆支持两个基本操作：
+  pop：即将当前优先级最高的元素出堆，即将堆顶元素移出优先队列
+        同时在移出后保持堆的性质
+  push(val): 即将一个元素加入优先队列中
+        同时在加入后维护堆的性质
+
+相对于普通队列的先进先出，
+堆则是下一个出来队的元素一定是其最值
+
+排序算法的稳定性：
+  指排序前后相同元素的相对顺序是否发变化
+
+  冒泡排序：稳定
+  选择排序：不稳定
+  插入排序：稳定
+  归并排序：稳定
+  BST排序：稳定
+  快速排序：不稳定
+  堆排序：不稳定
+
+  稳定性的作用：
+
+
+  [
+    {name: 'zang', zong: 120, yuwen: 81, shuxue: 90},
+    {name: 'wang', zong: 95 , yuwen: 80, shuxue: 90},
+    {name: 'leei', zong: 120, yuwen: 85, shuxue: 90},
+    {name: 'zhao', zong: 120, yuwen: 85, shuxue: 60},
+    {name: 'dong', zong: 105, yuwen: 80, shuxue: 90},
+  ]
+
+<script>
+  class PriorityQueueBy {
+    // predicate谓语函数，传入一个值，让其返回值进行某种操作
+    constructor(predicate = it => it) {
+      this.elements = []
+      this.predicate = predicate
+    }
+    #swap(i, j) {
+      var a = this.elements[i]
+      this.elements[i] = this.elements[j]
+      this.elements[j] = a
+    }
+    push(val) {
+      var idx = this.elements.push(val) - 1
+      this.heapUp(idx)
+      return this
+    }
+    pop() {
+      if (this.elements.length == 1) {
+        return this.elements.pop()
+      }
+      if (this.elements.length > 1) {
+        var result = this.elements[0]
+        this.elements[0] = this.elements.pop()
+        this.heapDown(0) // 从根结点开始向下维护这个堆
+        return result
+      }
+    }
+    // idx位置被放入了新的元素
+    // 从idx位置开始向下调整并维护堆的状态
+    heapDown(idx) {
+      while(true) {
+        var maxIdx = idx
+        var leftIdx = (idx * 2) + 1
+        if (leftIdx < this.elements.length && this.predicate(this.elements[leftIdx]) > this.predicate(this.elements[maxIdx])) {
+          maxIdx = leftIdx
+        }
+        var rightIdx = leftIdx + 1
+        if (rightIdx < this.elements.length && this.predicate(this.elements[rightIdx]) > this.predicate(this.elements[maxIdx])) {
+          maxIdx = rightIdx
+        }
+        if (maxIdx !== idx) {
+          this.#swap(maxIdx, idx)
+          idx = maxIdx
+        } else {
+          return
+        }
+      }
+    }
+    heapUp(idx) {
+      while (idx > 0) {
+        var pIdx = (idx - 1) >> 1
+        if (this.predicate(this.elements[idx]) > this.predicate(this.elements[pIdx])) {
+          this.#swap(idx, pIdx)
+        } else {
+          break
+        }
+        idx = pIdx
+      }
+    }
+    peek() {
+      return this.elements[0]
+    }
+  }
+
+  pq = new PriorityQueue(it => it.age)
+
+  pq.push({
+    name: 'zhang',
+    age: 18,
+  })
+  pq.push({
+    name: 'wang',
+    age: 16,
+  })
+
+  // 空间：n
+  // 时间：n*log(n)
+  function sortByHeap(ary) {
+    var pq = new PriorityQueue()
+    // 时间：n*log(n)  (1 + 2 + 3 + logn)(n个) （最差情况： 只有左节点，右节点为空）
+    for (var i = 0; i < ary.length; i++) {
+      pq.push(ary[i])
+    }
+    var j = 0
+    for (var i = 0; i < ary.length; i++) {
+      ary[j++] = pq.pop()
+    }
+    return ary
+  }
+
+  function swap(ary, i, j) {
+    var a = ary[i]
+    ary[i] = ary[j]
+    ary[j] = a
+  }
+
+  // 从数组的idx位置向下维护ary堆的性质，stopIdx及其以后的数不再是堆，作为排序的位置
+  function heapDown(ary, idx, stopIdx = ary.length, compare) {
+    while(true) {
+      var maxIdx = idx
+      var leftIdx = (idx * 2) + 1
+      if (leftIdx < stopIdx && compare(ary[leftIdx], ary[maxIdx]) > 0) {
+        maxIdx = leftIdx
+      }
+      var rightIdx = leftIdx + 1
+      if (rightIdx < stopIdx && compare(ary[rightIdx], ary[maxIdx]) > 0) {
+        maxIdx = rightIdx
+      }
+      if (maxIdx !== idx) {
+        swap(ary, maxIdx, idx)
+        idx = maxIdx
+      } else {
+        return
+      }
+    }
+  }
+  // 将数组就地堆化，空间占用是O（1）
+  function heapify(ary, compare) {
+    var startIdx = (ary.length - 1) >> 1
+    for (var i = startIdx; i >= 0; i--) {
+      heapDown(ary, i, ary.length, compare)
+    }
+    return ary
+  }
+
+  // 时间复杂度：O(n*log(n))
+  // 空间复杂度：O(1) 没有创建过数组，没有递归过
+  function heapSort(ary, compare = (a, b) => a - b) {
+    heapify(ary, compare)
+    for (var i = ary.length - 1; i > 0; i--) {
+      swap(ary, 0, i)
+      // 一直和子节点交换到对的位置，交换肯定不是循环，所以每次交换不管有多少条语句都是常数的时间复杂度。
+      heapDown(ary, 0, i, compare)
+    }
+    return ary
+  }
+</script>

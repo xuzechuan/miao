@@ -1,0 +1,312 @@
+225行
+<script type="text/JavaScript" id="ch0104/01">
+  var N = Number(prompt())
+  if (N > 0) {
+    console.log('positive')
+  } else if (N == 0) {
+    console.log('zero')
+  } else {
+      console.log('negative')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/02">
+  var n = Number(prompt())
+  if (n > 0) {
+    console.log(n)
+  } else if (n < 0) {
+    console.log(-n)
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/03">
+  var n = Number(prompt())
+  if (n % 2 == 0) {
+    console.log('even')
+  } else {
+    console.log('odd')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/04">
+  var n = prompt()
+  a = n.charCodeAt()
+  if (a % 2 != 0) {
+    console.log('YES')
+  } else {
+    console.log('NO')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/05">
+  var x = Number(prompt())
+  var y = Number(prompt())
+  if (x > y) {
+    console.log('>')
+  } else if (x == y) {
+    console.log('=')
+  } else {
+    console.log('<')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/06">
+  var n =Number(prompt())
+  if (n >= 10 && n <= 99) {
+    console.log(1)
+  } else {
+    console.log(0)
+  }
+</script>
+
+<script text="text/JavaScript" id="ch0104/07">
+  var a = Number(prompt())
+  var b = Number(prompt())
+  if (a >= 10 || a >= 20) {
+    console.log('1')
+  } else {
+    console.log('0')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/08">
+  var n = Number(prompt())
+  if (n % 3 == 0 && n % 5 == 0) {
+    console.log('YES')
+  } else {
+    console.log('NO')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/09">
+  // var n = Number(prompt())
+  // if (n % 3 == 0 && n % 5== 0 && n % 7 == 0) {
+  //   console.log(3, 5, 7)
+  // } else if (n % 3 == 0 && n % 5 == 0 && n % 7 != 0) {
+  //   console.log(3, 5)
+  // } else if (n % 3 == 0 && n % 5 != 0 && n % 7 == 0) {
+  //   console.log(3, 7)
+  // } else if (n % 3 != 0 && n % 5 == 0 && n % 7 == 0) {
+  //   console.log(5, 7)
+  // } else if (n % 3 == 0 && n % 5 != 0 && n % 7 != 0) {
+  //   console.log(3)
+  // } else if (n % 3 != 0 && n % 5 == 0 && n % 7 != 0) {
+  //   consile.log(5)
+  // } else if (n % 3 != 0 && n % 5 != 0 && n % 7 == 0) {
+  //   console.log(7)
+  // } else {
+  //   console.log('n')
+  // }
+
+  // var n = Number(prompt())
+  // // if (n % 3 == 0 || n % 5 == 0 || n % 7 == 0) {
+  // //   if (n % 3 == 0) {
+  // //     console.log('3')
+  // //   }
+  // //   if (n % 5 == 0) {
+  // //     console.log('5')
+  // //   }
+  // //   if (n % 7 == 0) {
+  // //     console.log('7')
+  // //   }
+  // // } else {
+  // //   console.log('n')
+  // // }
+
+  var n = Number(prompt())
+  进过 = false
+  if (n % 3 == 0) {
+    console.log(3)
+    进过 = true
+  }
+  if (n % 5 == 0) {
+    console.log(5)
+    进过 = true
+  }
+  if (n % 7 == 0) {
+    conosle.log(7)
+    进过 = true
+  }
+  if (!进过) {
+    conosle.log('n')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/10">
+  var a = Number(prompt())
+  var b = Number(prompt())
+  var 不及格门数 = 0
+  if (a < 60) {
+    不及格门数 = 不及格门数 + 1
+  }
+  if (b < 60) {
+    不及格门数 = 不及格门数 + 1
+  }
+  if (不及格门数 == 1) {
+    console.log('1')
+  } else {
+    console.log('0')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/11">
+  var n = Number(prompt())
+  if (n == 1 || n == 3 || n == 5) {
+    console.log('NO')
+  } else {
+    console.log('YES')
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/12">
+  var S = Number(prompt())
+  var bike = S / 3 + 50
+  var walk = S / 1.2
+  if (bike < walk) {
+    console.log('Bike')
+  } else if (walk < bike) {
+    console.log('Walk')
+  } else {
+    console.log('All')
+  }
+</script>
+
+
+<script type="text/JavaScript" id="ch0104/13">
+  var N = Number(prompt())
+  var y
+  if (N < 5) {
+    y = -N + 2.5
+    console.log(y.toFixed(3))
+  } else if (N < 10) {
+    y = 2 - 1.5 * (-N - 3) ** 2
+    console.log(y.toFixed(3))
+  } else if (N < 20) {
+    y = -N / 2 - 1.5
+    console.log(y.toFixed(4))
+  }
+</script>
+
+<script type="text/JavaScript" id="ch0104/14">
+  var n = Number(prompt())
+  var a = prompt('y or n')
+  if (a == 'y') {
+
+
+    if (n <= 1000) {
+      console.log(8 + 5)
+    } else {
+      var x = (Math.ceil((n - 1000) / 500)) * 4 + 8 + 5
+      console.log(x)
+    }
+
+
+  } else if (a == 'n') {
+
+        if (n <= 1000) {
+      console.log(8 + 5)
+    } else {
+      var x = (Math.ceil((n - 1000) / 500)) * 4 + 8
+      console.log(x)
+    }
+  }
+</script>
+
+<script type="text/JavaScript" id="0104/15">
+  var a = Number(prompt())
+  var b = Number(prompt())
+  var c = Number(prompt())
+  // if (a > b && a > c) {
+  //   console.log(a)
+  // } else if (b > a && b > c) {
+  //   console.log(b)
+  // } else if (c > a && c > b) {
+  //   console.log(c)
+  // }
+
+  var max = a
+  if (b > max) {
+    max = b
+  }
+  if (c > max) {
+    max = c
+  }
+  console.log(max)
+</script>
+
+<script type="text/JavaScript" id="0104/16">
+  var a = Number(prompt())
+  var b = Number(prompt())
+  var c = Number(prompt())
+  if (a + b > c && a + c > b && b + c > a) {
+    if ((Math.abs(a - b) < c) && (Math.abs(a - c) < b) && (Math.abs(c - b) < a)) {
+      console.log('yes')
+    }
+  } else {
+    console.log('no')
+  }
+</script>
+
+<script type="text/JavaScript" id="0104/17">
+  // 四年一闰；百年不闰,四百年再闰
+  var n = Number(prompt())
+  if (n % 4 == 0) {
+    if (n % 400 == 0 && n % 100 != 0) {
+      console.log('Y')
+    }
+  } else {
+    console.log('N')
+  }
+</script>
+
+<script type="text/JavaScript" id="0104/18">
+  var x = Number(prompt())
+  var y = Number(prompt())
+  if (x >= -1 && x <= 1 && y >= -1 && y <= 1) {
+    console.log('yes')
+  } else{
+    console.log('no')
+  }
+</script>
+
+<script type="text/JavaScript" id="0104/19">
+  var x = Number(prompt())
+  var y = Number(prompt())
+  var operator = prompt()
+  if (operator != '-' && operator != '+' && operator != '*' && operator != '/') {
+    console.log('Invalid operator!')
+  } else if (operator == '+') {
+    console.log(x + y)
+  } else if (operator == '-') {
+    console.log(x - y)
+  } else if (operator == '*') {
+    console.log(x * y)
+  } else if (operator == '/' y == 0) {
+    console.log('Divided by zero!')
+  } else {
+    console.log(x / y)
+  }
+</script>
+
+  <script type="text/JavaScript" id="0104/20">
+  var a = Number(prompt())
+  var b = Number(prompt())
+  var c = Number(prompt())
+  if (b ** 2 == 4 * a * c) {
+    x = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a)
+    console.log('x1=x2=' + x.toFixed(5))
+  } else if (b ** 2 > 4 * a * c) {
+    x1 = ((-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a))
+    x2 = ((-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a))
+    console.log('x1=' + x1.toFixed(5) + ';' + 'x2=' + x2.toFixed(5))
+  } else {
+    var 实部 = (-b / (2 * a)).toFixed(5)
+    var 虚部 = (Math.sqrt(4 * a * c - b * b) / (2 * a)).toFixed(5)
+    if (a > 0) {
+      console.log('x1=' + 实部 + '+' + 虚部 + 'i' + ';' + 'x2=' + 实部 + '-' + 虚部 + 'i')
+    } else {
+      console.log('x1=' + 实部 + '+' + 虚部 + 'i' + ';' + 'x2=' + 实部 + 虚部 + 'i')
+    }
+  }
+</script>
+

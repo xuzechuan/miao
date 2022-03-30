@@ -1,0 +1,202 @@
+<script>
+  // 生成n个由n以内的整数组成的随机数组
+  function randomAry(n) {
+    let res = [];
+    for (let i = 0; i < n; i++) {
+      res.push(Math.floor(Math.random() * n));
+    }
+    return res;
+  }
+
+  // 判断一个数组是否是升序的
+  function isSorted(ary) {
+    for (let i = 1; i <= ary.length; i++) {
+      if (ary[i] < ary[i - 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function swap(ary, i, j) {
+    let temp = ary[i];
+    ary[i] = ary[j];
+    ary[j] = temp;
+  }
+
+  // 找出剩下元素中最小的放入i位置
+  function selectSort(ary) {
+    //数组最后一项不用遍历
+    for (var i = 0; i < ary.length - 1; i++) {
+      var minIdx = i;
+      for (var j = i + 1; j < ary.length; j++) {
+        if (ary[j] < ary[minIdx]) {
+          minIdx = j;
+        }
+      }
+      swap(ary, i, minIdx);
+    }
+    return ary;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //把小的值两两交换到前面已经排好递增顺序的数组
+  function insertSort(ary) {
+    for (let i = 1; i < ary.length; i++) {
+      for (let j = i; j >= 0; j--) {
+        if (ary[j] < ary[j - 1]) {
+          swap(ary, j, j - 1);
+        } else {
+          break;
+        }
+      }
+    }
+    return ary;
+  }
+
+  function bubbleSort(ary) {
+    let isSwapped = false;
+    for (let i = ary.length - 1; i > 0; i--) {
+      for (let j = 0; j <= i; j++) {
+        if (ary[j] > ary[j + 1]) {
+          isSwapped = true;
+          swap(ary, j, j + 1);
+        }
+      }
+      if (!isSwapped) {
+        break;
+      }
+    }
+    return ary;
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////
+
+  // 时间复杂度：O(n*log(n))
+  // 空间复杂度：O(1) 没有创建过数组，没有递归过
+  function heapSort(ary) {
+    heapify(ary);
+    for (let i = ary.length - 1; i >= 1; ) {
+      [ary[i], ary[0]] = [ary[0], ary[i]];
+      i--;
+      shiftDown(ary, 0, i);
+    }
+    return ary;
+  }
+
+  function shiftDown(ary, start, end) {
+    while (start * 2 + 1 <= end) {
+      let i = start * 2 + 1;
+      if (i + 1 <= end && ary[i + 1] > ary[i]) {
+        i++;
+      }
+      if (ary[i] > ary[start]) {
+        [ary[i], ary[start]] = [ary[start], ary[i]];
+        start = i;
+      } else {
+        break;
+      }
+    }
+  }
+
+  function heapify(ary) {
+    // >> 1 奇数会减一除以2  偶数直接除以2
+    let start = (ary.length - 1) >> 1;
+    for (let i = start; i >= 0; i--) {
+      shiftDown(ary, i, ary.length - 1);
+    }
+  }
+  let a = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+  heapSort(a);
+
+  // 对数组ary的从start到end（包含）的元素进行快排
+  function qSort(ary, start = 0, end = ary.length - 1) {
+    //???????????????????????????????????????????????????start >= end
+    if (start >= end) {
+      return ary;
+    }
+
+    var pivotIdx = start; // Math.floor(Math.random() * (end - start + 1) + start)
+    var pivot = ary[pivotIdx];
+
+    swap(ary, pivotIdx, end);
+
+    var i = start;
+
+    // 不遍历放在最后的哨兵元素
+    for (var j = start; j < end; j++) {
+      if (ary[j] < pivot) {
+        swap(ary, i, j);
+        i++;
+      }
+    }
+
+    swap(ary, i, end);
+
+    qSort(ary, start, i - 1);
+    qSort(ary, i + 1, end);
+
+    return ary;
+  }
+
+  function qSort(ary, start = 0, end = ary.length - 1) {
+    if (start === end) return ary;
+    const pivotIdx = Math.floor(Math.random(end - start + 1) + start);
+    const pivot = ary[pivotIdx];
+    [ary[pivotIdx], ary[end]] = [ary[end], ary[pivotIdx]];
+    let i = start;
+    for (let j = start; j < ary.length; j++) {
+      if (ary[j] < pivot) {
+        [ary[i], ary[j]] = [ary[j], ary[i]];
+        i++;
+      }
+    }
+    [ary[end], ary[i]] = [ary[i], ary[end]];
+    qSort(ary, start, i - 1);
+    qSort(ary, i + 1, end);
+    return ary;
+  }
+
+  /**
+   * 时间复杂度：n*log(n)
+   * 空间复杂度：n + log(n)
+   */
+  function mergeSort(ary) {
+    if (ary.length < 2) {
+      return ary;
+    }
+    // 把数组一分为二
+    var mid = Math.floor(ary.length / 2);
+    var left = ary.slice(0, mid);
+    var right = ary.slice(mid);
+    // 左边排
+    mergeSort(left);
+    // 右边排
+    mergeSort(right);
+
+    // 合起来
+    var i = 0; // 指向left数组
+    var j = 0; // 指向right数组
+    var k = 0; // 指向结果数组
+
+    if (left.at(-1) > right.at(0)) {
+      //同步指针，任意一个数组先遍历完结束
+      while (i < left.length && j < right.length) {
+        if (left[i] < right[j]) {
+          ary[k++] = left[i++];
+        } else {
+          ary[k++] = right[j++];
+        }
+      }
+    }
+
+    //哪一个数组还没遍历完加到结果数组的末尾
+    while (i < left.length) {
+      ary[k++] = left[i++];
+    }
+    while (j < right.length) {
+      ary[k++] = right[j++];
+    }
+
+    return ary;
+  }
+</script>

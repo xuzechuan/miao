@@ -1,0 +1,20 @@
+<div>
+  <div data-tabname="about">about</div>
+  <div data-tabname="详情">详情</div>
+  <div data-tabname="关闭">关闭</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+  let div = document.querySelector('div');
+  asTabs(div);
+  function asTabs(node) {
+    $(node).children().hide().map(function() {
+      return $('<button></button>')
+      .text(this.dataset.tabname)
+      .click(() => {
+        $(this).css('color', 'red').show().siblings('div').hide()
+      })[0]
+    }).prependTo(node);
+  }
+</script>

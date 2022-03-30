@@ -1,0 +1,129 @@
+<script>
+  // 节流： 每隔一段时间执行一次 防抖： 多次操作只执行最后一次或者第一次；
+  function debounce(func, time, immediate) {
+    let id;
+    let res;
+    const debounced = function(...args) {
+      clearTimeout(id);
+      // 立即执行
+      if (immediate) {
+        if (!id) res = func.apply(this, args);
+        setTimeout(() => {
+          id = null;
+        }, time);
+        // wait,后执行
+      } else {
+        id = setTimeout(() => {
+          res = func.apply(this, args);
+        }, wait);
+      }
+      return res;
+    }
+    debounced.cancel = () => {
+      clearTimeout(id);
+      id = null;
+    }
+    return debounced;
+  }
+
+
+  function throttle(func, wait) {
+      var latestArgs, context;
+      var previous = 0;
+
+      return function(...args) {
+        context = this;
+        var now = Date.now();
+        latestArgs = args;
+        if (now - previous > wait) {
+            func.apply(context, latestArgs);
+            previous = now;
+        }
+      }
+  }
+
+  function throttle(func, wait) {
+    var timeout;
+    let latestArgs, context;
+
+    return function(...args) {
+      context = this;
+      latestArgs = args;
+        if (!timeout) {
+            timeout = setTimeout(() => {
+                timeout = null;
+                func.apply(context, latestArgs)
+            }, wait)
+        }
+
+    }
+</script>
+
+
+
+
+
+<textarea> Type something here ... </textarea>
+<script>
+  var textarea = document.querySelector(" textarea ");
+  // var timeout;
+
+  // textarea.addEventListener("keydown", function () {
+  //   clearTimeout(timeout);
+  //   timeout = setTimeout(function () {
+  //     console.log(" You stopped typing .");
+  //   }, 500);
+  // });
+
+  textarea.addEventListener(
+    "keydown",
+    throttle(function () {
+      console.log(" You stopped typing .");
+    }, 500)
+  );
+
+  textarea.addEventListener(
+    "resize",
+    // 持续的resize,只会在最后一次resize的500ms后执行一次函数A;
+    debounce(function A() {
+      console.log(" You stopped resizing .");
+    }, 500)
+  );
+
+  function debounce(func, time) {
+    var timeout;
+    return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(func, time);
+    };
+  }
+
+  function throttle(func, time) {
+    var timeout;
+    var scheduled = false;
+    var event;
+    return function (e) {
+      event = e;
+      if (!scheduled) {
+        scheduled = true;
+        // 闭包
+        timeout = setTimeout(() => {
+          func(event);
+          scheduled = false;
+        }, time);
+      }
+    };
+  }
+
+
+  function throttle2(func, time) {
+    var lastTime = 0;
+    return function (e) {
+      var now = Date.now();
+      if (now - lastTime > time) {
+        func(e);
+        lastTime = now;
+      }
+    };
+  }
+</script>

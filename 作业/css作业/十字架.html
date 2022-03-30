@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/less">
+    body {
+      margin: 0;
+    }
+    div {
+      margin: auto;
+      width: 400px;
+      height: 400px;
+      background-color: pink;
+      position: relative;
+      &::before, &::after {
+        content: "";
+        position: absolute;
+        background-color: red;
+        width: 200px;
+        height: 20px;
+        top: 190px;
+        right: 100px;
+      }
+      &::after {
+        transform: rotateZ(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div></div>
+</body>
+<script src="less.min.js"></script>
+</html>

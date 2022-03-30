@@ -1,0 +1,223 @@
+// let bindedArgs = fixedArgs.slice() // return func.apply(thisArg, bindedArgs)
+thisArg??????? // 函数表达式 和 函数声明 提升
+<script>
+  function intersection(ary1, ary2) {
+    let res = [];
+    let set = new Set(ary2);
+    for (let i = 0; i < ary1.length; i++) {
+      if (set.has(ary1[i])) {
+        result.push(ary1[i]);
+      }
+    }
+    return res;
+  }
+
+  // This method returns the first argument it receives.
+  function identity(val) {
+    return val;
+  }
+
+  function intersection(ary1, ary2) {
+    // return intersectionBy(ary1, ary2, it => it)
+    return intersectionBy(ary1, ary2);
+  }
+
+  // intersectionBypredicate 数组的项传给predicate，返回值进行intersection
+  function intersectionBy(ary1, ary2, predicate = identity) {
+    let res = [];
+    let set = new Set(ary2.map(predicate));
+    for (let i = 0; i < ary1.length; i++) {
+      if (set.has(predicate(ary1[i]))) {
+        res.push(ary1[i]);
+      }
+    }
+    return res;
+  }
+
+  function intersectionWith(ary1, ary2, comparor) {
+    let res = [];
+    for (let i = 0; i < ary1.length; i++) {
+      for (let j = 0; i < ary2.length; j++) {
+        if (compare(ary1[i], ary2[j])) {
+          res.push(ary[i]);
+        }
+      }
+    }
+    return res;
+  }
+
+  // _.filter(users, {age: 36, active: true})
+  // _.filter(users, it => it.age == 36 && it.active == true)
+  // _.filter(users, ['active', true])
+  // _.filter(users, it => it.active == true)
+  // _.filter(users, 'active')
+  // // 把users的项传给函数，函数返回值为真保留项，假去除项
+  // _.filter(users, it => it.active)
+
+  // // The `_.matches` iteratee shorthand.
+  // _.filter(users, _.matches({ 'age': 36, 'active': true }));
+  // // => objects for ['barney']
+
+  // // The `_.matchesProperty` iteratee shorthand.
+  // _.filter(users, _.matchesProperty(['active', false]));
+  // // => objects for ['fred']
+
+  // // The `_.property` iteratee shorthand.
+  // _.filter(users, _.property('active'));
+  // // => objects for ['barney']
+
+  function toPath(path) {
+    if (typeof path == "string") {
+      return (
+        path
+          .split("[")
+          // 1.数组每一项传给函数，返回值加入新数组 2.再将数组扁平化
+          .flatMap((it) => it.split("]"))
+          .flatMap((it) => it.split("."))
+          // 把数组每一项传给函数，函数返回值为真保留项，假去除项
+          .filter((it) => it)
+      );
+    } else {
+      return path;
+    }
+  }
+
+  // _.get(object, 'a[0].b.c');
+  // // => 3
+
+  // _.get(object, ['a', '0', 'b', 'c']);
+  // // => 3
+
+  // _.get(object, 'a.b.c', 'default');
+  // // => 'default'
+
+  // getAdotB
+  function get(obj, path) {
+    let names = toPath(path);
+    for (let name of names) {
+      obj = obj[name];
+      if (obj == null) return obj;
+    }
+    return obj;
+  }
+
+  function get(obj, path) {
+    let names = toPath(path);
+    return names.reduce((obj, name) => {
+      // return obj && obj[name] 0
+      return obj[name] ?? obj;
+    }, obj);
+  }
+
+  // 函数定义：获取对象路径的值。
+  function get(obj, path) {
+    path = toPath(path);
+    if (obj == null) {
+      return obj;
+    }
+    // base case
+    if (path.length == 0) {
+      return obj;
+    }
+    // 函数定义：获取obj[path[0]]对象路径的值。
+    return get(obj[path[0]], path.slice(1));
+  }
+
+  var _ = {};
+  // [1, _, 3, _, 5]
+  function bind(func, thisArg, ...fixedArgs) {
+    // [2, 9, 4, 6,7]
+    return function (...args) {
+      // 拷贝一份新数组
+      let bindedArgs = fixedArgs.slice();
+      let i = 0;
+      for (let j = 0; j < bindedArgs.length; j++) {
+        if (bindedArgs[j] === _) {
+          bindedArgs[j] = args[i++];
+        }
+      }
+      bindedArgs.push(...args.slice(i));
+      return func.apply(thisArg, bindedArgs);
+    };
+  }
+
+  // 返回一个函数（传入obj获取对象路径的值。）
+  function property(path) {
+    return function (obj) {
+      return get(obj, path);
+    };
+  }
+
+  function property(path) {
+    return bind(get, null, _, path);
+  }
+
+  // isA1B3
+  function matches(src) {
+    return function (obj) {
+      for (let key in src) {
+        if (obj[key] !== src[key]) {
+          return false;
+        }
+      }
+      return true;
+    };
+  }
+
+  // obj = {a: 1, b: 2, c: {x: 1, y: 2}} src = {b: 2, c: {y: 2}}
+  function isMatch(obj, src) {
+    for (let key in src) {
+      if (src[key] && typeof src[key] == "object") {
+        if (!isMatch(obj[key], src[key])) {
+          return false;
+        }
+      }
+      if (obj[key] !== src[key]) {
+        return false;
+      }
+      return true;
+    }
+  }
+
+  function matches(src) {
+    return bind(isMatch, null, _, src);
+  }
+
+  function matchProperty(path, val) {
+    return function (obj) {
+      return isEqual(get(obj, path), val);
+    };
+  }
+
+  function iteratee(predicate = identity) {
+    if (typeof predicate === "string") {
+      predicate = property(predicate);
+    }
+    if (Array.isArray(predicate)) {
+      predicate = matchProperty(...predicate);
+    }
+    if (predicate && typeof predicate === "object") {
+      predicate = matches(predicate);
+    }
+    return predicate;
+  }
+  function filter(users, predicate) {
+    predicate = iteratee(predicate);
+
+    let res = [];
+    for (let i = 0; i < users.length; i++) {
+      if (predicate(ary[i], i)) {
+        res.push(ary[i]);
+      }
+    }
+    return res;
+  }
+
+  function transformIteratee(f) {
+    return function (...args) {
+      let last = args.pop();
+      predicate = iteratee(last);
+      return f(...args, predicate);
+    };
+  }
+</script>

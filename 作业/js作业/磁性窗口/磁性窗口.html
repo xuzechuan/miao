@@ -1,0 +1,51 @@
+<div class="cube" style="top: 0; left: 0;width: 300px;height: 300px; background-color: green; position: fixed;resize: both; overflow: auto;cursor: move;">
+  <span class="title" style="height: 100px;background-color: blue;display: block;text-align: center;">标题</span>
+</div>
+<div class="cube" style="top: 0; left: 0;width: 300px;height: 300px; background-color: gold; position: fixed;resize: both; overflow: hidden;cursor: move;">
+  <span class="title" style="height: 100px;background-color: blue;display: block;text-align: center;">标题</span>
+</div>
+<style>
+  html {
+    user-select: none;
+  }
+</style>
+<script>
+  let startX;
+  let startY;
+  let moveTarget;
+  let moveTargetZ = 1;
+  let nodeX;
+  let nodeY;
+  document.addEventListener('mousedown', function(e) {
+    if (e.target.matches('.title')) {
+      moveTarget = e.target.closest('.cube');
+      moveTarget.style['z-index'] = moveTargetZ++;
+      nodeX = parseInt(moveTarget.style.left);
+      nodeY = parseInt(moveTarget.style.top);
+      startX = e.clientX;
+      startY = e.clientY;
+      // 鼠标移动多少距离，点击cube上的点移动对应距离；
+      document.addEventListener('mousemove', function move(e) {
+        if (e.which === 0) {
+          document.removeEventListener('mousemove', move);
+        }
+        let dx = e.clientX - startX;
+        let dy = e.clientY - startY;
+        console.log(e.clientX);
+        console.log(e.clientY);
+        // let left = parseInt(moveTarget.style.left) + dx;
+        // let top = parseInt(moveTarget.style.top) + dy;
+        let left = nodeX + dx;
+        let top = nodeY + dy;
+        if (left < 50) left = 0;
+        if (top < 50) top = 0;
+        if (top > innerHeight - moveTarget.offsetHeight - 50) top = innerHeight - moveTarget.offsetHeight;
+        if (left > innerWidth - moveTarget.offsetWidth - 50) left = innerWidth - moveTarget.offsetWidth;
+        moveTarget.style.left = left + 'px';
+        moveTarget.style.top = top + 'px';
+        // startX = e.clientX;
+        // startY = e.clientY;
+      })
+    }
+  })
+</script>

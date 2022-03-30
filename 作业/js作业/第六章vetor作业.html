@@ -1,0 +1,383 @@
+<script>
+  function Vector(x, y) {
+    this.x = x
+    this.y = y
+  }
+  Vector.prototype.plus = function(v) {
+    var x = this.x + v.x
+    var y = this.y + v.y
+    return new Vector(x, y)
+  }
+  Vector.prototype.minus = function(v) {
+    var x = this.x - v.x
+    var y = this.y - v.y
+    return new Vector(x, y)
+  }
+  Vector.prototype.getLength = function() {
+    return Math.sqrt(this.x * this.x + this.y * this.y)
+  }
+  Object.defineProperty(Vector.prototype, 'length', {
+    get: function() {
+      return Math.sqrt(this.x * this.x + this.y * this.y)
+    }
+  })
+</script>
+
+
+
+<script>
+    // 可以判断有没有加new
+    function Complex(real, imag) {
+      // if (this == window) { // 如果this是window，说明没加new
+    if (!(this instanceof Complex)) { //如果加new,this的原型就是Complex的prototype属性；如果返回false,说明没加new
+      return new Complex(real, imag)
+    }
+    this.real = real
+    this.imag = imag
+  }
+
+  // 静态方法：直接挂在构造函数上，通过  构造函数.xx  的形式访问到
+  // 静态方法正常使用（Complex.fromString('5+3i')）里面的this是构造函数自身
+  Complex.fromString = function(str) {
+    var real = xxxx
+    var imag = xxyxyxy
+    return new Complex(real, imag)
+  }
+  Complex.add = function(a, b) {
+     return a.plus(b)
+  }
+
+
+  // 实例方法：通过  实例.xx  访问到
+  Complex.prototype.plus = function(c) {
+    var real = this.real + c.real
+    var imag = this.imag + c.imag
+    return new Complex(real, imag)
+  }
+  Complex.prototype.minus = function(c) {
+    var real = this.real - c.real
+    var imag = this.imag - c.imag
+    return new Complex(real, imag)
+  }
+  Complex.prototype.mul = function(c) {
+    var real = this.real * c.real - this.imag * c.imag
+    var imag = this.real * c.imag + this.imag * c.real
+    return new Complex(real, imag)
+  }
+  Complex.prototype.div = function(c) {
+    var helper = new Complex(c.real, -c.imag)
+    var fenzhi = this.mul(helper)
+    var fenmu  = c.mul(helper)
+
+    return new Complex(fenzhi.real / fenmu.real, fenzhi.imag / fenmu.real)
+  }
+  Complex.prototype.toString = function() {
+    if (this.imag < 0) {
+      return '' + this.real + this.imag + 'i'
+    }
+    return this.real + '+' + this.imag + 'i'
+  }
+</script>
+
+
+<script>
+  let a = new Myset()
+  function Myset(initial = []) {
+    this._elements = []
+    //箭头函数没有this
+    initial.forEach(it => {
+      this.add(it)
+    })
+  }
+/*   function Myset(initial) {
+    this._elements = []
+    this是Myset？？？？？？？？？？？？，add在Myset的prototype属性上，没在Myset原型上
+    initial.forEach(function (it) {
+      this.add(it)
+    })
+  } */
+  Myset.prototype.has = function (val) {
+    return this._elements.includes(val)
+  }
+  Myset.prototype.add = function (val) {
+    if (!this.has(val)) {
+      this._elements.push(val)
+    }
+    return this
+  }
+  Myset.prototype.delete = function (val) {
+    let idx = this._elements.indexOf(val)
+    if (idx >= 0) {
+      this._elements.splice(idx, 1)
+    }
+    return this
+  }
+  Myset.prototype.clear = function () {
+    this._elements = []
+    return this
+  }
+  Object.defineProperty(Myset.prototype, 'size', {
+    get: function () {
+      return this._elements.length
+    }
+  })
+</script>
+
+<script>
+    /**
+   * 箭头函数与非箭头函数的区别：
+   *
+   * 箭头函数里面没有arguments，使用时看其外部环境中的arguments
+   * 箭头函数里面没有this，所以一般也不能放在原型上做为实例的方法
+   *    使用时看其外部环境中的this指向谁
+   * 箭头函数没有prototype
+   * 箭头函数不能new，即不能做为构造函数，非要new会报错
+   */
+  function Stack(initials = []) {
+    this._head = null
+    this._size = 0
+    initials.forEach( it => {
+      this.push(it)
+    })
+  }
+  Stack.prototype.push = function (val) {
+    let node = {
+      val: val,
+      next: this._head
+    }
+    this._head = node
+    this._size++
+    return this
+  }
+  stack.prototype.pop = function () {
+    if (this._head) {
+      let val = this._head.val
+      let node = this._head.next
+      this._head = null
+      this._head = node
+      this._size--
+    }
+    return val
+  }
+  stack.prototype.peek = function () {
+    if (this._head) {
+      return this._head.val
+    }
+  }
+  Object.definproperty(Stack.prototype, 'size', {
+    get function () {
+      return this._size
+    }
+  })
+
+  class Stack2 {
+    #head = null
+    #size = 0
+    constructor(initials = []) {
+      initials.forEach(it => {
+        this.push(it)
+      })
+    }
+    push(val) {
+      var node = {
+        val: val,
+        next: this.#head
+      }
+      this.#head = node
+      this.#size++
+      return this
+    }
+    pop() {
+      if (this.#head) {
+        var val = this.#head.val
+        this.#head = this.#head.next
+        this.#size--
+        return val
+      }
+    }
+    peek() {
+      if (this.#head) {
+        return this.#head.val
+      }
+    }
+    get size() {
+      return this.#size
+    }
+  }
+</script>
+
+
+<script>
+  function Queue(initial = []) {
+    this._head = null
+    this._tail = null
+    this._size = 0
+    initial.forEach(it => {
+      this.dequeue(it)
+    })
+  }
+  Queue.prototype.enqueue = function (val) {
+    let node = {
+      val: val,
+      next: null
+    }
+    if (this._head) {
+      this._tail.next = node
+      this._tail = this._tail.next
+    } else {
+      this._head = this._tail = node
+    }
+    this._size++
+    return this
+  }
+  Queue.prototype.dequeue = function () {
+    if (this._head) {
+      let val = this._head.val
+      let node = this._head.next
+      if (node == null) {
+        this._head = this._tail = null
+      }
+      this._head = null
+      this._head = node
+    }
+    this._size--
+    return val
+  }
+  Queue.prototype.peek = function () {
+    if (this.head) {
+      return this.head.val
+    }
+  }
+  Object.definproperty(Queue.prototype, 'size', {
+    get: function () {
+      return this._size
+    }
+  })
+  Queue.prototype = {
+    constructor: Queue,
+    enqueue: function () {},
+    dequeue: function () {},
+    peek: function () {},
+    get size() {
+      return this._size
+    }
+  }
+</script>
+
+
+<script>
+  function MyMap() {
+    this._mapKeys = []
+    this._mapVals = []
+  }
+  // 简写
+  MyMap.prototype = {
+    constructor: MyMap,
+    _keyIdx(key) {
+      return this._mapKeys.indexOf(key)
+    },
+    set(key, val) {
+      let idx = this._keyIdx(key)
+      if (idx == -1) {
+        this._mapKeys.push(key)
+        this._mapVals.push(val)
+      } else {
+        this._mapVals[idx] = val
+      }
+      return this
+    },
+    get(key) {
+      let idx = this._keyIdx(key)
+      if (idx >= 0) {
+        return this._mapVals[idx]
+      }
+    },
+    has(key) {
+      let idx = this._keyIdx(key)
+      if (idx >= 0) {
+        return true
+      } else {
+        return false
+      }
+    },
+    clear() {
+      this._mapKeys.length = 0
+      this._mapVals.length = 0
+      return this
+    },
+    delete(key) {
+      let idx = this._keyIdx(key)
+      if (idx >= 0) {
+        this._mapKeys.splice(idx, 1)
+        this._mapVals.splice(idx, 1)
+      }
+      return this
+    },
+    get size() {
+      return this.mapKeys.length
+    }
+  }
+
+
+
+
+
+    /**
+   * 使用上方的语法实现一个类的时候
+   * 会存在一些问题：
+   * 代码不是一整块
+   * 代码的重复有很多
+   *      统一重置原型对象
+   * 原型上的方法都可以被枚举出来:
+   *      对每个原型上的方法及属性使用defineProperty来定义
+   * 实现继承的时候比较麻烦：
+   *      需要自身重置原型链
+   * 复用父类的构造函数时写法比较奇怪：
+   *      BasicMap.call(this, xxx, yyy)
+   * 构造函数可以不加new调用，可能会造成返回undefined
+   *      在构造函数内添加判断逻辑
+   * 静态方法也得一块一块的写
+   *      MyMap.xxx = function() {}
+   *      MyMap.yyy = function() {}
+   * 没有私有属性
+   *    实现起来比较麻烦
+   *
+   *
+   */
+
+
+  MyMap2.prototype.__proto__ === BasicMap.prototype
+  MyMap2.__proto__ === BasicMap
+  BasicMap.__proto__ === Function.prototype
+
+  // 相当于设置BasicMap.prototype
+  class BasicMap {
+    has() {
+    }
+  }
+   //class只能用new调用
+  class MyMap2 extends BasicMap {
+    // 静态方法 以MyMap2.isMap()调用
+    static isMap() {}
+    // 构造函数
+    #mapKeys = [];
+    #mapVals = []; // private class field
+    size = 0;
+    count = 0; // class field
+    constructor() {
+      super(1,2,3) // 调用父类构造函数,如果没有父类，则不用这句，如果有，则必须写
+      var x = new Stack()
+      super.has() // 调用来自父类的方法
+      this.has() // 调用自身的方法
+    }
+    // 以下为定义在prototype属性上的方法
+    get() {}
+    set() {}
+    has() {}
+    delete() {}
+    clear() {}
+    // 以下为定义在原型上的getter/setter/accesser
+    get size() {}
+    set size(val) {}
+  }
+</script>

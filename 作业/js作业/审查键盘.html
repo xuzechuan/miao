@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <textarea name="" id="" cols="30" rows="10"></textarea>
+  <script>
+    const textarea = document.querySelector('textarea');
+
+    // textarea.addEventListener('keydown', function(e) {
+    //   if (e.key === 'Q' || e.key === 'W' || e.key === 'X') {
+    //     e.preventDefault();
+    //   }
+    // })
+    // textarea.addEventListener('paste', function(e) {
+    //   e.preventDefault();
+    //   let text = e.clipboardData.getData('text');
+    //   let before = this.value.slice(0, this.selectionStart);
+    //   let after = this.value.slice(this.selectionEnd);
+    //   text += '一二';
+
+    //   this.value = before + text + after;
+    //   this.selectionStart = this.selectionEnd = before.length + text.length;
+    // })
+    // textarea.addEventListener('copy', function(e) {
+    //   let text = document.getSelection().toString();
+    //   console.log(document.getSelection().toString())
+    //   text += 'ssss';
+    //   e.clipboardData.setData('text/plain', text);
+    //   e.preventDefault();
+    // })
+    const valueDescriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(textarea), 'value');
+    Object.defineProperty(textarea, 'value', {
+      get: function() {
+        return valueDescriptor.get.call(this);
+      },
+      set: function(val) {
+        val = val.replace(/[WXQ]/g, '*');
+        return valueDescriptor.set.call(this, val);
+      }
+    })
+
+  </script>
+</body>
+</html>

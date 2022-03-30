@@ -1,0 +1,252 @@
+// 238 Myset     constructor() {
+        this.map = new MyMap()
+    }
+// 203     constructor() {
+      this.map = Object.create(null)
+    }
+
+// 65
+<script>
+
+
+  class HashTable2 {
+
+    constructor() {
+      this.mapKeys = Array(32)
+      this.mapVals = Array(32)
+    }
+
+    // 通过映射的key计算出一个整数
+    // 期望的目标是对不同的字符串都计算出不同的值
+    hashCode(key) {
+      var hash = 131313131
+      var seed = 131
+      for (var i = 0; i < key.length; i++) {
+        // >>> 0 32位二进制全部用来表示正数，溢出从0开始
+        hash = (((hash * seed) >>> 0) + key.charCodeAt(i)) >>> 0
+      }
+      return hash % this.mapKeys.length
+    }
+    set(key, val) {
+      var idx = this.hashCode(key)
+      this.mapKeys[idx] = key
+      this.mapVals[idx] = val
+      return this
+    }
+    get(key) {
+      var idx = this.hashCode(key)
+      return this.mapVals[idx]
+    }
+    has(key) {
+      var idx = this.hashCode(key)
+      if (this.mapKeys[idx] !== undefined) {
+        return true
+      } else {
+        return false
+      }
+    }
+    delete(key) {
+      var idx = this.hashCode(key)
+      delete this.mapKeys[idx]
+      delete this.mapVals[idx]
+    }
+  }
+
+
+
+  class HashTable {
+    constructor() {
+      this.maps = Array(32).fill(null)
+      this._size = 0
+    }
+
+    // 通过映射的key计算出一个整数
+    // 期望的目标是对不同的字符串都计算出不同的值
+    hashCode(key) {
+      if (typeof key == 'number') {
+        key = 'N-' + key
+      } else if (typeof key == 'string') {
+        key = 'S-' + key
+      } else if (typeof key == 'boolean') {
+        key = 'B-' + key
+      } else if (key == null) {
+        key = 'NIL-' + key
+      } else {
+        if ('my_hashtable_objectId' in key) {
+          key = key.my_hashtable_objectId
+        } else {
+          key = key.my_hashtable_objectId = 'O-' + String(id++)
+        }
+      }
+      var hash = 131313131
+      var seed = 131
+      for (var i = 0; i < key.length; i++) {
+        // >>> 0 32位二进制全部用来表示正数，所以溢出从0开始，不会从负数开始
+        hash = (((hash * seed) >>> 0) + key.charCodeAt(i)) >>> 0
+      }
+      return hash % this.maps.length
+    }
+    set(key, val) {
+      var idx = this.hashCode(key)
+      var p = this.maps[idx]
+      while (p) {
+        if (p.key === key) {
+          p.val = val
+          return this
+        }
+        p = p.next
+      }
+      this.maps[idx] = {
+        // key: key,
+        key,
+        // val: val,
+        val,
+        next: this.maps[idx],
+      }
+      this._size++
+      if (this._size / this.maps.length > 0.75) {
+        this.#扩容()
+      }
+      return this
+    }
+    delete(key) {
+      var idx = this.hashCode(key)
+      var p = this.maps[idx]
+      if (p.key === key) {
+        this.maps[idx] = p.next
+        this._size--
+        if (this._size / this.maps.length < 0.2) {
+          this.#缩容()
+        }
+        return this
+      }
+      while(p.next) {
+        if (p.next.key == key) {
+          p.next = p.next.next
+          this._size--
+          if (this._size / this.maps.length < 0.2) {
+            this.#缩容()
+          }
+          break
+        }
+        p = p.next
+      }
+      return this
+    }
+    #扩容() {
+      var prevMaps = this.maps
+      this.maps = new Array(this.maps.length * 2).fill(null)
+      this._size = 0
+
+      for (var list of prevMaps) {
+        var p = list
+        while (p) {
+          var key = p.key
+          var val = p.val
+          this.set(key, val)
+          p = p.next
+        }
+      }
+    }
+    #缩容() {
+      if (this.maps.length <= 32) {
+        return
+      }
+      var prevMaps = this.maps
+      this.maps = new Array(this.maps.length / 2).fill(null)
+      this._size = 0
+
+      for (var list of prevMaps) {
+        var p = list
+        while (p) {
+          var key = p.key
+          var val = p.val
+          this.set(key, val)
+          p = p.next
+        }
+      }
+    }
+    get(key) {
+      var idx = this.hashCode(key)
+      var p = this.maps[idx]
+      while(p) {
+        if (p.key === key) {
+          return p.val
+        }
+        p = p.next
+      }
+      return undefined
+    }
+    has(key) {
+      var idx = this.hashCode(key)
+      var p = this.maps[idx]
+      while(p) {
+        if (p.key === key) {
+          return true
+        }
+        p = p.next
+      }
+      return false
+    }
+
+    clear() {
+      this.maps = Array(32).fill(null)
+      this._size = 0
+      return this
+    }
+  }
+
+
+
+  class MyMap {
+    constructor() {
+      this.map = Object.create(null)
+    }
+    set(key, val) {
+      if (typeof key == 'number') {
+        key = 'N' + key
+      }
+      if (typeof key == 'string') {
+        key = 'S' + key
+      }
+      if (typeof key == 'boolean') {
+        key = 'B' + key
+      }
+      if (typeof key == 'function' || typeof key == 'object' || Array.isArray(key)) {
+        if (key.$$$$$______AAAAA_____BBBB_objectId) {
+          key = key.objectId
+        } else {
+          key.objectId = id++
+          key = key.objectId
+        }
+      }
+
+      this.map[key] = val
+    }
+    get(key) {
+      return this.map[key]
+    }
+  }
+
+
+  function twoSum() {
+    var map = {}
+  }
+
+  class MySet {
+    constructor() {
+        this.map = new MyMap()
+    }
+    add(val) {
+        this.map.set(val, '在')
+        return this
+    }
+    delete(val) {
+        this.map.delete(val)
+    }
+    has(val) {
+        return this.map.get(val)  ===  '在'
+    }
+  }
+
+</script>

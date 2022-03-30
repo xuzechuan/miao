@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "iconfont2"; /* Project id  */
+  src: url('iconfont.ttf?t=1639918480605') format('truetype');
+}
+
+.iconfont2 {
+  font-family: "iconfont2" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sousuo:before {
+  content: "\f00d9";
+}
+
+.icon-cuocha_kuai:before {
+  content: "\ed1e";
+}
+
